@@ -18,9 +18,11 @@ module.exports = function(app, passport) {
 		res.render('login.ejs', { message: req.flash('loginMessage') });
 	});
 
-	app.post('/login', function(req, res) {
-		// handle user/password authentication here
-	});
+	app.post('/login', passport.authenticate('local-login', {
+		successRedirect: '/profile',
+		failureRedirect: '/login',
+		failureFlash: true
+	}));
 
 	app.get('/signup', function(req, res) {
 
@@ -30,7 +32,7 @@ module.exports = function(app, passport) {
 	app.post('/signup', passport.authenticate('local-signup', {
 		successRedirect: '/profile',
 		failureRedirect: '/signup',
-		failureFlas: true
+		failureFlash: true
 	}));
 
 	app.get('/profile', isLoggedIn, function(req, res) {
